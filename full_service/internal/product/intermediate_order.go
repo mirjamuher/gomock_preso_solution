@@ -1,8 +1,6 @@
 package product
 
 import (
-	"errors"
-	"fmt"
 	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
 
@@ -28,11 +26,8 @@ func (ps *ProductService) CreateOrders(order *Order) error {
 			Method:     order.PaymentMethod,
 		}
 		state, err := ps.paymentService.ProcessPayment(payment)
-		if err != nil {
-			return err
-		}
-		if state != p.Succeeded {
-			return errors.New(fmt.Sprintf("PaymentState is %v", state))
+		if err != nil ||  state != p.Succeeded  {
+			order.PaymentState = p.Failed
 		}
 
 		// store successfully payed order
