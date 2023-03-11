@@ -7,7 +7,7 @@ import (
 
 type ProductService struct {
 	db             *sql.DB
-	paymentService p.PaymentService
+	paymentService p.Payer
 }
 
 func (ps *ProductService) CreateOrder(order *Order) error {
@@ -30,7 +30,7 @@ func (ps *ProductService) CreateOrder(order *Order) error {
 	}
 
 	// Create the order in the database
-	if err := ps.InsertOrder(order, *state); err != nil {
+	if err := ps.InsertOrder(order, state); err != nil {
 		return err
 	}
 

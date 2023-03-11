@@ -2,14 +2,17 @@ package product
 
 import (
 	"database/sql"
+	"github.com/golang/mock/gomock"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
+	mock_payment "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment/mocks"
 	"testing"
 )
 
 func TestProductService_CreateOrder(t *testing.T) {
+	validOrder := Order{}
+
 	type fields struct {
-		db             *sql.DB
-		paymentService payment.PaymentService
+		paymentService func() payment.Payer
 	}
 	type args struct {
 		order *Order
@@ -21,19 +24,17 @@ func TestProductService_CreateOrder(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "",
+			name: "create order succesfully",
 			fields: fields{
-				db:             &sql.DB{},
-				paymentService: payment.PaymentService{},
+				paymentService: func() payment.Payer {
+					ctrl := gomock.NewController(t)
+					p := mock_payment.NewMockPayer(ctrl)
+					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Succeeded, nil)
+					return p
+				},
 			},
 			args: args{
-				order: &Order{
-					Product: Product{
-						Price: 0,
-					},
-					Quantity:      0,
-					PaymentMethod: "",
-				},
+				order: &validOrder,
 			},
 			wantErr: false,
 		},
@@ -41,8 +42,8 @@ func TestProductService_CreateOrder(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ps := &ProductService{
-				db:             tt.fields.db,
-				paymentService: tt.fields.paymentService,
+				db:             &sql.DB{},
+				paymentService: tt.fields.paymentService(),
 			}
 			if err := ps.CreateOrder(tt.args.order); (err != nil) != tt.wantErr {
 				t.Errorf("CreateOrder() error = %v, wantErr %v", err, tt.wantErr)

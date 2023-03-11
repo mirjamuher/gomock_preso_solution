@@ -35,10 +35,10 @@ func (m *MockPayer) EXPECT() *MockPayerMockRecorder {
 }
 
 // ProcessPayment mocks base method.
-func (m *MockPayer) ProcessPayment(arg0 *payment.Payment) (*payment.PaymentState, error) {
+func (m *MockPayer) ProcessPayment(arg0 *payment.Payment) (payment.PaymentState, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ProcessPayment", arg0)
-	ret0, _ := ret[0].(*payment.PaymentState)
+	ret0, _ := ret[0].(payment.PaymentState)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

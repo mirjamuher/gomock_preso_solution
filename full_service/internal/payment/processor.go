@@ -8,30 +8,30 @@ import (
 //go:generate mockgen -destination=mocks/mock_payer.go --build_flags=--mod=mod github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment Payer
 
 type Payer interface {
-	ProcessPayment(p *Payment) (*PaymentState, error)
+	ProcessPayment(p *Payment) (PaymentState, error)
 }
 
 type PaymentService struct {
 	client *http.Client
 }
 
-func (ps *PaymentService) ProcessPayment(p *Payment) (*PaymentState, error) {
+func (ps *PaymentService) ProcessPayment(p *Payment) (PaymentState, error) {
 	// Insert payment into DB
 	if err := ps.PersistPayment(p); err != nil {
-		return nil, err
+		return Failed, err
 	}
 
 	// Call external payment API
 	req, err := ps.CreateRequest(p)
 	if err != nil {
-		return nil, err
+		return Failed, err
 	}
 
 	state, err := ps.SendPaymentRequest(req);
 	if err != nil {
-		return nil, err
+		return Failed, err
 	}
 
-	return &state, nil
+	return state, nil
 }
 
