@@ -2,6 +2,7 @@ package product
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/golang/mock/gomock"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 	mock_payment "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment/mocks"
@@ -24,7 +25,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "create order succesfully",
+			name: "success: payment & persistence successful",
 			fields: fields{
 				paymentService: func() payment.Payer {
 					ctrl := gomock.NewController(t)
@@ -37,6 +38,36 @@ func TestProductService_CreateOrder(t *testing.T) {
 				order: &validOrder,
 			},
 			wantErr: false,
+		},
+		{
+			name: "error: process payment failed",
+			fields: fields{
+				paymentService: func() payment.Payer {
+					ctrl := gomock.NewController(t)
+					p := mock_payment.NewMockPayer(ctrl)
+					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Failed, errors.New(""))
+					return p
+				},
+			},
+			args: args{
+				order: &validOrder,
+			},
+			wantErr: true,
+		},
+		{
+			name: "error: process payment returned other state than success",
+			fields: fields{
+				paymentService: func() payment.Payer {
+					ctrl := gomock.NewController(t)
+					p := mock_payment.NewMockPayer(ctrl)
+					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Unknown, nil)
+					return p
+				},
+			},
+			args: args{
+				order: &validOrder,
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {

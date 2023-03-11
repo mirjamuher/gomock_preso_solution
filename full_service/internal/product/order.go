@@ -2,6 +2,8 @@ package product
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
 
@@ -27,6 +29,9 @@ func (ps *ProductService) CreateOrder(order *Order) error {
 	state, err := ps.paymentService.ProcessPayment(payment)
 	if err != nil {
 		return err
+	}
+	if state != p.Succeeded {
+		return errors.New(fmt.Sprintf("PaymentState is %v", state))
 	}
 
 	// Create the order in the database
