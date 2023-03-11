@@ -2,7 +2,7 @@ package payment
 
 import "net/http"
 
-//go:generate mockgen -destination=mocks/mock_payer.go
+//go:generate mockgen -destination=mocks/mock_payer.go github.com/mirjamuher/SubscriptionService/internal/payment Payer
 
 type Payer interface {
 	ProcessPayment(p *Payment) (*PaymentState, error)
