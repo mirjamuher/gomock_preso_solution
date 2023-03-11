@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"full_service/internal/product"
+	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/product"
 )
 
 func main() {

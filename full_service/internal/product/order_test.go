@@ -2,7 +2,7 @@ package product
 
 import (
 	"database/sql"
-	"full_service/internal/payment"
+	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 	"testing"
 )
 
@@ -20,7 +20,23 @@ func TestProductService_CreateOrder(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "",
+			fields: fields{
+				db:             &sql.DB{},
+				paymentService: payment.PaymentService{},
+			},
+			args: args{
+				order: &Order{
+					Product: Product{
+						Price: 0,
+					},
+					Quantity:      0,
+					PaymentMethod: "",
+				},
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

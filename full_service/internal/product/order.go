@@ -2,7 +2,7 @@ package product
 
 import (
 	"database/sql"
-	p "full_service/internal/payment"
+	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
 
 type ProductService struct {
