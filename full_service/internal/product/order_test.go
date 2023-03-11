@@ -1,8 +1,8 @@
 package product
 
 import (
-	"SubscriptionService/internal/payment"
 	"database/sql"
+	"full_service/internal/payment"
 	"testing"
 )
 

@@ -1,7 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"full_service/internal/product"
+)
 
 func main() {
 	fmt.Println("Hello World")
+
+	ps := product.ProductService{}
+	if err := ps.CreateOrder(&product.Order{}); err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println("success")
 }

@@ -1,8 +1,8 @@
 package product
 
 import (
-	p "SubscriptionService/internal/payment"
 	"database/sql"
+	p "full_service/internal/payment"
 )
 
 type ProductService struct {
@@ -30,7 +30,7 @@ func (ps *ProductService) CreateOrder(order *Order) error {
 	}
 
 	// Create the order in the database
-	if err := ps.InsertOrder(order, state); err != nil {
+	if err := ps.InsertOrder(order, *state); err != nil {
 		return err
 	}
 
