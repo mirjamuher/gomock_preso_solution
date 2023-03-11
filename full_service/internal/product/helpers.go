@@ -5,3 +5,7 @@ import p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/paym
 func (ps *ProductService) InsertOrder(order *Order, state p.PaymentState) error {
 	return nil
 }
+
+func (ps *ProductService) InsertOrders([]*Order) error {
+	return nil
+}

@@ -1,16 +1,10 @@
 package product
 
 import (
-	"database/sql"
 	"errors"
 	"fmt"
 	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
-
-type ProductService struct {
-	db             *sql.DB
-	paymentService p.Payer
-}
 
 func (ps *ProductService) CreateOrder(order *Order) error {
 	// Validate the order
