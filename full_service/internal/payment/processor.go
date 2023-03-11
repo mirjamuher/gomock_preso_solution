@@ -1,10 +1,10 @@
 package payment
 
 import (
-	_ "github.com/golang/mock/mockgen/model"
 	"net/http"
 )
 
+// Important - explain in presentation the bug that makes --build_flags=--mod=mod required
 //go:generate mockgen -destination=mocks/mock_payer.go --build_flags=--mod=mod github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment Payer
 
 type Payer interface {

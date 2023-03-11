@@ -1,4 +1,4 @@
-module full_service
+module github.com/mirjamuher/gomock_preso_solution/full_service
 
 go 1.18
 
