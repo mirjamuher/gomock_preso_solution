@@ -35,10 +35,5 @@ func (ps *BookingService) CreateOrders(order *Booking) error {
 		paidOrders = append(paidOrders, order)
 	}
 
-	// Create the order in the database
-	if err := ps.InsertOrders(paidOrders); err != nil {
-		return err
-	}
-
 	return nil
 }

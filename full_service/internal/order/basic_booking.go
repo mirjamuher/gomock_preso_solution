@@ -12,12 +12,9 @@ func (ps *BookingService) CreateBooking(booking *Booking) error {
 		return err
 	}
 
-	// Process p for the booking
-	product := booking.Product
-	totalPrice := product.Price * float64(booking.Quantity)
-
+	// Process payment for the booking
 	payment := &p.Payment{
-		TotalPrice: totalPrice,
+		TotalPrice: booking.Product.Price * float64(booking.Quantity),
 		Method:     booking.PaymentMethod,
 	}
 	state, err := ps.paymentService.ProcessPayment(payment)
@@ -26,11 +23,6 @@ func (ps *BookingService) CreateBooking(booking *Booking) error {
 	}
 	if state != p.Succeeded {
 		return errors.New(fmt.Sprintf("PaymentState is %v", state))
-	}
-
-	// Create the booking in the database
-	if err := ps.InsertOrder(booking, state); err != nil {
-		return err
 	}
 
 	return nil
