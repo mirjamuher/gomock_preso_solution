@@ -5,7 +5,7 @@ import (
 )
 
 // Important - explain in presentation the bug that makes --build_flags=--mod=mod required
-//go:generate go run github.com/golang/mock/mockgen@v1.6.0 -destination=mocks/mock_payer.go --build_flags=--mod=mod github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment Payer
+//go:generate go run github.com/stretchr/testify@v1.7.0 -name Payer
 
 type Payer interface {
 	ProcessPayment(p *Payment) (PaymentState, error)
