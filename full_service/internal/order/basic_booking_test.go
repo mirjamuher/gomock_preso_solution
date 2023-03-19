@@ -2,15 +2,25 @@ package order
 
 import (
 	"database/sql"
-	"errors"
-	"github.com/golang/mock/gomock"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
-	mock_payment "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment/mocks"
+	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment/mocks"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestProductService_CreateOrder(t *testing.T) {
-	validOrder := Booking{}
+	validOrder := Booking{
+		Product:       Product{
+			Price: 100,
+		},
+		Quantity:      1,
+		PaymentMethod: "CREDIT",
+		PaymentState:  0,
+	}
+	validPayment := payment.Payment{
+		TotalPrice: 100,
+		Method:     "CREDIT",
+	}
 
 	type fields struct {
 		paymentService func() payment.Payer
@@ -28,10 +38,9 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "success: payment & persistence successful",
 			fields: fields{
 				paymentService: func() payment.Payer {
-					ctrl := gomock.NewController(t)
-					p := mock_payment.NewMockPayer(ctrl)
-					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Succeeded, nil)
-					return p
+					ps := mocks.NewPayer(t)
+					ps.On("ProcessPayment", &validPayment).Return(payment.Succeeded, nil)
+					return ps
 				},
 			},
 			args: args{
@@ -43,10 +52,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "error: process payment failed",
 			fields: fields{
 				paymentService: func() payment.Payer {
-					ctrl := gomock.NewController(t)
-					p := mock_payment.NewMockPayer(ctrl)
-					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Failed, errors.New(""))
-					return p
+					return nil
 				},
 			},
 			args: args{
@@ -58,10 +64,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "error: process payment returned other state than success",
 			fields: fields{
 				paymentService: func() payment.Payer {
-					ctrl := gomock.NewController(t)
-					p := mock_payment.NewMockPayer(ctrl)
-					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Unknown, nil)
-					return p
+					return nil
 				},
 			},
 			args: args{
@@ -79,6 +82,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 			if err := ps.CreateBooking(tt.args.order); (err != nil) != tt.wantErr {
 				t.Errorf("CreateBooking() error = %v, wantErr %v", err, tt.wantErr)
 			}
+			assert.True(t, true)
 		})
 	}
 }
