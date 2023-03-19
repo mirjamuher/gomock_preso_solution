@@ -6,19 +6,19 @@ import (
 	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
 
-func (ps *ProductService) CreatePurchase(order *Order) error {
-	// Validate the order
-	if err := order.Validate(); err != nil {
+func (ps *BookingService) CreateBooking(booking *Booking) error {
+	// Validate the booking
+	if err := booking.Validate(); err != nil {
 		return err
 	}
 
-	// Process p for the order
-	product := order.Product
-	totalPrice := product.Price * float64(order.Quantity)
+	// Process p for the booking
+	product := booking.Product
+	totalPrice := product.Price * float64(booking.Quantity)
 
 	payment := &p.Payment{
 		TotalPrice: totalPrice,
-		Method: order.PaymentMethod,
+		Method:     booking.PaymentMethod,
 	}
 	state, err := ps.paymentService.ProcessPayment(payment)
 	if err != nil {
@@ -28,8 +28,8 @@ func (ps *ProductService) CreatePurchase(order *Order) error {
 		return errors.New(fmt.Sprintf("PaymentState is %v", state))
 	}
 
-	// Create the order in the database
-	if err := ps.InsertOrder(order, state); err != nil {
+	// Create the booking in the database
+	if err := ps.InsertOrder(booking, state); err != nil {
 		return err
 	}
 

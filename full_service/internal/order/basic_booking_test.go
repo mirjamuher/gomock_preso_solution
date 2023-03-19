@@ -10,13 +10,13 @@ import (
 )
 
 func TestProductService_CreateOrder(t *testing.T) {
-	validOrder := Order{}
+	validOrder := Booking{}
 
 	type fields struct {
 		paymentService func() payment.Payer
 	}
 	type args struct {
-		order *Order
+		order *Booking
 	}
 	tests := []struct {
 		name    string
@@ -72,12 +72,12 @@ func TestProductService_CreateOrder(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ps := &ProductService{
+			ps := &BookingService{
 				db:             &sql.DB{},
 				paymentService: tt.fields.paymentService(),
 			}
-			if err := ps.CreatePurchase(tt.args.order); (err != nil) != tt.wantErr {
-				t.Errorf("CreatePurchase() error = %v, wantErr %v", err, tt.wantErr)
+			if err := ps.CreateBooking(tt.args.order); (err != nil) != tt.wantErr {
+				t.Errorf("CreateBooking() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

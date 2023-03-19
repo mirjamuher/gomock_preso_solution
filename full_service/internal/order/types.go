@@ -1,23 +1,23 @@
-package product
+package order
 
 import (
 	"database/sql"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
 
-type ProductService struct {
+type BookingService struct {
 	db             *sql.DB
 	paymentService payment.Payer
 }
 
-type Order struct {
+type Booking struct {
 	Product Product
 	Quantity int
 	PaymentMethod string
 	PaymentState payment.PaymentState
 }
 
-func (o *Order) Validate() error {
+func (o *Booking) Validate() error {
 	return nil
 }
 

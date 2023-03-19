@@ -4,7 +4,7 @@ import (
 	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
 
-func (ps *ProductService) CreateOrders(order *Order) error {
+func (ps *BookingService) CreateOrders(order *Booking) error {
 	// Validate the order
 	if err := order.Validate(); err != nil {
 		return err
@@ -14,7 +14,7 @@ func (ps *ProductService) CreateOrders(order *Order) error {
 	}
 
 	// keep track of the orders we've processed payments for
-	var paidOrders []*Order
+	var paidOrders []*Booking
 
 	for i := 0; i < order.Quantity; i ++ {
 		// Process payment for the order

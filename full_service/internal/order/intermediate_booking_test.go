@@ -10,7 +10,7 @@ import (
 )
 
 func TestProductService_CreateOrders(t *testing.T) {
-	twoOrders := Order{
+	twoOrders := Booking{
 		Quantity:      2,
 	}
 
@@ -18,7 +18,7 @@ func TestProductService_CreateOrders(t *testing.T) {
 		paymentService func() payment.Payer
 	}
 	type args struct {
-		order *Order
+		order *Booking
 	}
 	tests := []struct {
 		name    string
@@ -64,7 +64,7 @@ func TestProductService_CreateOrders(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ps := &ProductService{
+			ps := &BookingService{
 				db:             &sql.DB{}, // in a full example, this would be mocked too
 				paymentService: tt.fields.paymentService(),
 			}
