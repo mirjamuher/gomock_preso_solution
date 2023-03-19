@@ -2,6 +2,12 @@ package payment
 
 import "net/http"
 
+//go:generate mockgen -destination=mocks/mock_payer.go --build_flags=--mod=mod github.com/mirjamuher/gomock_preso_solution/demo_service/internal/payment Payer
+
+type Payer interface {
+	ProcessPayment(p *Payment) (PaymentState, error)
+}
+
 type PaymentService struct {
 	client *http.Client
 }

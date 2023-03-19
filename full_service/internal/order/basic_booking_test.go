@@ -1,4 +1,4 @@
-package product
+package order
 
 import (
 	"database/sql"
@@ -9,10 +9,8 @@ import (
 	"testing"
 )
 
-func TestProductService_CreateOrders(t *testing.T) {
-	twoOrders := Order{
-		Quantity:      2,
-	}
+func TestProductService_CreateOrder(t *testing.T) {
+	validOrder := Order{}
 
 	type fields struct {
 		paymentService func() payment.Payer
@@ -27,49 +25,59 @@ func TestProductService_CreateOrders(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "success: paid & stored multiple orders successfully",
+			name: "success: payment & persistence successful",
 			fields: fields{
 				paymentService: func() payment.Payer {
 					ctrl := gomock.NewController(t)
 					p := mock_payment.NewMockPayer(ctrl)
-					gomock.InOrder(
-						p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Succeeded, nil).Times(2),
-					)
+					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Succeeded, nil)
 					return p
 				},
 			},
 			args: args{
-				order: &twoOrders,
+				order: &validOrder,
 			},
 			wantErr: false,
 		},
 		{
-			name: "success: one order paid successfully, one failed -> storing both, no error returned",
+			name: "error: process payment failed",
 			fields: fields{
 				paymentService: func() payment.Payer {
 					ctrl := gomock.NewController(t)
 					p := mock_payment.NewMockPayer(ctrl)
-					gomock.InOrder(
-						p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Succeeded, nil),
-						p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Failed, errors.New("")),
-					)
+					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Failed, errors.New(""))
 					return p
 				},
 			},
 			args: args{
-				order: &twoOrders,
+				order: &validOrder,
 			},
-			wantErr: false,
+			wantErr: true,
+		},
+		{
+			name: "error: process payment returned other state than success",
+			fields: fields{
+				paymentService: func() payment.Payer {
+					ctrl := gomock.NewController(t)
+					p := mock_payment.NewMockPayer(ctrl)
+					p.EXPECT().ProcessPayment(gomock.Any()).Return(payment.Unknown, nil)
+					return p
+				},
+			},
+			args: args{
+				order: &validOrder,
+			},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ps := &ProductService{
-				db:             &sql.DB{}, // in a full example, this would be mocked too
+				db:             &sql.DB{},
 				paymentService: tt.fields.paymentService(),
 			}
-			if err := ps.CreateOrders(tt.args.order); (err != nil) != tt.wantErr {
-				t.Errorf("CreateOrders() error = %v, wantErr %v", err, tt.wantErr)
+			if err := ps.CreatePurchase(tt.args.order); (err != nil) != tt.wantErr {
+				t.Errorf("CreatePurchase() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

@@ -14,5 +14,5 @@ func (ps *PaymentService) CreateRequest(p *Payment) (*http.Request, error) {
 
 func (ps *PaymentService) SendPaymentRequest(req *http.Request) (PaymentState, error) {
 	// send payment request
-	return Succeeded, nil
+	return Success, nil
 }

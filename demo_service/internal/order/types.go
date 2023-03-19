@@ -7,7 +7,7 @@ import (
 
 type ProductService struct {
 	db             *sql.DB
-	paymentService payment.PaymentService
+	paymentService payment.Payer
 }
 
 type Order struct {

@@ -12,7 +12,7 @@ func (ps *ProductService) CreateOrder(order *Order) error {
 		return err
 	}
 
-	// Process p for the order
+	// Process payment for the order
 	product := order.Product
 	totalPrice := product.Price * float64(order.Quantity)
 
@@ -24,10 +24,11 @@ func (ps *ProductService) CreateOrder(order *Order) error {
 	if err != nil {
 		return err
 	}
-	if state != p.Succeeded {
+	if state != p.Success {
 		return errors.New(fmt.Sprintf("PaymentState is %v", state))
 	}
 
+	// TODO: Take the DB stuff out
 	// Create the order in the database
 	if err := ps.InsertOrder(order, state); err != nil {
 		return err

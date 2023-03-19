@@ -1,4 +1,4 @@
-package product
+package order
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 )
 
-func (ps *ProductService) CreateOrder(order *Order) error {
+func (ps *ProductService) CreatePurchase(order *Order) error {
 	// Validate the order
 	if err := order.Validate(); err != nil {
 		return err

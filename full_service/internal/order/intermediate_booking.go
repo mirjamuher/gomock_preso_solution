@@ -1,4 +1,4 @@
-package product
+package order
 
 import (
 	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"

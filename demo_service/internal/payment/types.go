@@ -10,6 +10,6 @@ type PaymentState int
 const (
 	Unknown PaymentState = iota
 	Initiated
-	Succeeded
+	Success
 	Failed
 )
