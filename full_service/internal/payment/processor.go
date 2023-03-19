@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-//go:generate go run github.com/vektra/mockery/v2@v2.20.0 --name Payer
+//go:generate go run github.com/vektra/mockery/v2@v2.20.0 --with-expecter=true --name Payer
 
 type Payer interface {
 	ProcessPayment(p *Payment) (PaymentState, error)

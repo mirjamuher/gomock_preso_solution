@@ -2,6 +2,7 @@ package order
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment/mocks"
 	"github.com/stretchr/testify/assert"
@@ -39,7 +40,8 @@ func TestProductService_CreateOrder(t *testing.T) {
 			fields: fields{
 				paymentService: func() payment.Payer {
 					ps := mocks.NewPayer(t)
-					ps.On("ProcessPayment", &validPayment).Return(payment.Succeeded, nil)
+					//ps.On("ProcessPayment", &validPayment).Return(payment.Succeeded, nil)
+					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Succeeded, nil)
 					return ps
 				},
 			},
@@ -52,7 +54,9 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "error: process payment failed",
 			fields: fields{
 				paymentService: func() payment.Payer {
-					return nil
+					ps := mocks.NewPayer(t)
+					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, errors.New("error"))
+					return ps
 				},
 			},
 			args: args{
@@ -64,7 +68,9 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "error: process payment returned other state than success",
 			fields: fields{
 				paymentService: func() payment.Payer {
-					return nil
+					ps := mocks.NewPayer(t)
+					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil)
+					return ps
 				},
 			},
 			args: args{
@@ -80,9 +86,12 @@ func TestProductService_CreateOrder(t *testing.T) {
 				paymentService: tt.fields.paymentService(),
 			}
 			if err := ps.CreateBooking(tt.args.order); (err != nil) != tt.wantErr {
-				t.Errorf("CreateBooking() error = %v, wantErr %v", err, tt.wantErr)
+				if tt.wantErr {
+					assert.Error(t, err)
+				} else {
+					assert.NoError(t, err)
+				}
 			}
-			assert.True(t, true)
 		})
 	}
 }
