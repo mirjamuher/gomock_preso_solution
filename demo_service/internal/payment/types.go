@@ -5,11 +5,11 @@ type Payment struct {
 	Method string
 }
 
-type PaymentState int
+type State int
 
 const (
-	Unknown PaymentState = iota
+	Unknown State = iota
 	Initiated
-	Success
+	Succeeded
 	Failed
 )

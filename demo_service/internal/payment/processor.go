@@ -1,33 +1,16 @@
 package payment
 
-import "net/http"
+import (
+	"net/http"
+)
 
-//go:generate mockgen -destination=mocks/mock_payer.go --build_flags=--mod=mod github.com/mirjamuher/gomock_preso_solution/demo_service/internal/payment Payer
-
-type Payer interface {
-	ProcessPayment(p *Payment) (PaymentState, error)
-}
+//go:generate go run github.com/vektra/mockery/v2@v2.20.0 --with-expecter=true --name Payer
 
 type PaymentService struct {
 	client *http.Client
 }
 
-func (ps *PaymentService) ProcessPayment(p *Payment) (PaymentState, error) {
-	// Insert payment into DB
-	if err := ps.PersistPayment(p); err != nil {
-		return Failed, err
-	}
-
-	// Call external payment API
-	req, err := ps.CreateRequest(p)
-	if err != nil {
-		return Failed, err
-	}
-
-	state, err := ps.SendPaymentRequest(req);
-	if err != nil {
-		return Failed, err
-	}
-
-	return state, nil
+func (ps *PaymentService) ProcessPayment(p *Payment) (State, error) {
+	// process payment logic here
+	return Succeeded, nil
 }
