@@ -12,7 +12,7 @@ type Booking struct {
 	Product Product
 	Quantity int
 	PaymentMethod string
-	PaymentState payment.PaymentState
+	PaymentState payment.State
 }
 
 func (o *Booking) Validate() error {

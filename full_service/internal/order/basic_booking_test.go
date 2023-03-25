@@ -29,7 +29,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 	//	},
 	//	Quantity:      1,
 	//	PaymentMethod: "DEBIT",
-	//	PaymentState:  0,
+	//	State:  0,
 	//}
 
 

@@ -9,10 +9,10 @@ type Reason struct {
 	Msg string
 }
 
-type PaymentState int
+type State int
 
 const (
-	Unknown PaymentState = iota
+	Unknown State = iota
 	Initiated
 	Succeeded
 	Failed

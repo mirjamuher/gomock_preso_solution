@@ -22,7 +22,7 @@ func (ps *BookingService) CreateBooking(booking *Booking) error {
 		return err
 	}
 	if state != p.Succeeded {
-		return errors.New(fmt.Sprintf("PaymentState is %v", state))
+		return errors.New(fmt.Sprintf("State is %v", state))
 	}
 
 	return nil
