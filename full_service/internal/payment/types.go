@@ -5,6 +5,10 @@ type Payment struct {
 	Method string
 }
 
+type Reason struct {
+	Msg string
+}
+
 type PaymentState int
 
 const (

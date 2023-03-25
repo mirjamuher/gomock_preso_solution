@@ -8,6 +8,9 @@ import (
 
 type Payer interface {
 	ProcessPayment(p *Payment) (PaymentState, error)
+	RefundPayment(p *Payment) error
+	UnmarshalReason(r *Reason) error
+	UnmarshalAndReturnReason(r *Reason) *Reason
 }
 
 type PaymentService struct {
@@ -15,7 +18,23 @@ type PaymentService struct {
 }
 
 func (ps *PaymentService) ProcessPayment(p *Payment) (PaymentState, error) {
-	// process payment
+	// process payment logic here
 	return Succeeded, nil
 }
 
+func (ps *PaymentService) RefundPayment(p *Payment) error {
+	// refund payment logic here
+	return nil
+}
+
+func (ps *PaymentService) UnmarshalReason(r *Reason) error {
+	// update passed in pointer
+	r.Msg = "it's not you, it's me"
+	return nil
+}
+
+func (ps *PaymentService) UnmarshalAndReturnReason(r *Reason) *Reason {
+	// update passed in pointer
+	r.Msg = "it's not you, it's me"
+	return r
+}

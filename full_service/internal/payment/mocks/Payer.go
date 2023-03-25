@@ -72,6 +72,134 @@ func (_c *Payer_ProcessPayment_Call) RunAndReturn(run func(*payment.Payment) (pa
 	return _c
 }
 
+// RefundPayment provides a mock function with given fields: p
+func (_m *Payer) RefundPayment(p *payment.Payment) error {
+	ret := _m.Called(p)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*payment.Payment) error); ok {
+		r0 = rf(p)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Payer_RefundPayment_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RefundPayment'
+type Payer_RefundPayment_Call struct {
+	*mock.Call
+}
+
+// RefundPayment is a helper method to define mock.On call
+//  - p *payment.Payment
+func (_e *Payer_Expecter) RefundPayment(p interface{}) *Payer_RefundPayment_Call {
+	return &Payer_RefundPayment_Call{Call: _e.mock.On("RefundPayment", p)}
+}
+
+func (_c *Payer_RefundPayment_Call) Run(run func(p *payment.Payment)) *Payer_RefundPayment_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*payment.Payment))
+	})
+	return _c
+}
+
+func (_c *Payer_RefundPayment_Call) Return(_a0 error) *Payer_RefundPayment_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Payer_RefundPayment_Call) RunAndReturn(run func(*payment.Payment) error) *Payer_RefundPayment_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UnmarshalAndReturnReason provides a mock function with given fields: r
+func (_m *Payer) UnmarshalAndReturnReason(r *payment.Reason) *payment.Reason {
+	ret := _m.Called(r)
+
+	var r0 *payment.Reason
+	if rf, ok := ret.Get(0).(func(*payment.Reason) *payment.Reason); ok {
+		r0 = rf(r)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*payment.Reason)
+		}
+	}
+
+	return r0
+}
+
+// Payer_UnmarshalAndReturnReason_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UnmarshalAndReturnReason'
+type Payer_UnmarshalAndReturnReason_Call struct {
+	*mock.Call
+}
+
+// UnmarshalAndReturnReason is a helper method to define mock.On call
+//  - r *payment.Reason
+func (_e *Payer_Expecter) UnmarshalAndReturnReason(r interface{}) *Payer_UnmarshalAndReturnReason_Call {
+	return &Payer_UnmarshalAndReturnReason_Call{Call: _e.mock.On("UnmarshalAndReturnReason", r)}
+}
+
+func (_c *Payer_UnmarshalAndReturnReason_Call) Run(run func(r *payment.Reason)) *Payer_UnmarshalAndReturnReason_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*payment.Reason))
+	})
+	return _c
+}
+
+func (_c *Payer_UnmarshalAndReturnReason_Call) Return(_a0 *payment.Reason) *Payer_UnmarshalAndReturnReason_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Payer_UnmarshalAndReturnReason_Call) RunAndReturn(run func(*payment.Reason) *payment.Reason) *Payer_UnmarshalAndReturnReason_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UnmarshalReason provides a mock function with given fields: r
+func (_m *Payer) UnmarshalReason(r *payment.Reason) error {
+	ret := _m.Called(r)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*payment.Reason) error); ok {
+		r0 = rf(r)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// Payer_UnmarshalReason_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UnmarshalReason'
+type Payer_UnmarshalReason_Call struct {
+	*mock.Call
+}
+
+// UnmarshalReason is a helper method to define mock.On call
+//  - r *payment.Reason
+func (_e *Payer_Expecter) UnmarshalReason(r interface{}) *Payer_UnmarshalReason_Call {
+	return &Payer_UnmarshalReason_Call{Call: _e.mock.On("UnmarshalReason", r)}
+}
+
+func (_c *Payer_UnmarshalReason_Call) Run(run func(r *payment.Reason)) *Payer_UnmarshalReason_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*payment.Reason))
+	})
+	return _c
+}
+
+func (_c *Payer_UnmarshalReason_Call) Return(_a0 error) *Payer_UnmarshalReason_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *Payer_UnmarshalReason_Call) RunAndReturn(run func(*payment.Reason) error) *Payer_UnmarshalReason_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 type mockConstructorTestingTNewPayer interface {
 	mock.TestingT
 	Cleanup(func())
