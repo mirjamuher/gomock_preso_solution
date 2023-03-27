@@ -74,9 +74,9 @@ func (ps *BookingService) ProcessBooking(booking *Booking) error {
 	// if the state is unknown, we pass a reason to be filled out
 	if state == p.Unknown {
 		reason := &p.Reason{}
-		err := ps.PaymentService.UnmarshalReason(reason)
+		err := ps.PaymentService.UpdateReason(reason)
 		if err != nil {
-			reason2 := ps.PaymentService.UnmarshalAndReturnReason(reason)
+			reason2 := ps.PaymentService.UpdateAndReturnReason(reason)
 			fmt.Println(reason2.Msg)
 			return nil
 		}

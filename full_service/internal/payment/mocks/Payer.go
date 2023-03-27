@@ -114,8 +114,8 @@ func (_c *Payer_RefundPayment_Call) RunAndReturn(run func(*payment.Payment) erro
 	return _c
 }
 
-// UnmarshalAndReturnReason provides a mock function with given fields: r
-func (_m *Payer) UnmarshalAndReturnReason(r *payment.Reason) *payment.Reason {
+// UpdateAndReturnReason provides a mock function with given fields: r
+func (_m *Payer) UpdateAndReturnReason(r *payment.Reason) *payment.Reason {
 	ret := _m.Called(r)
 
 	var r0 *payment.Reason
@@ -130,36 +130,36 @@ func (_m *Payer) UnmarshalAndReturnReason(r *payment.Reason) *payment.Reason {
 	return r0
 }
 
-// Payer_UnmarshalAndReturnReason_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UnmarshalAndReturnReason'
-type Payer_UnmarshalAndReturnReason_Call struct {
+// Payer_UpdateAndReturnReason_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateAndReturnReason'
+type Payer_UpdateAndReturnReason_Call struct {
 	*mock.Call
 }
 
-// UnmarshalAndReturnReason is a helper method to define mock.On call
+// UpdateAndReturnReason is a helper method to define mock.On call
 //  - r *payment.Reason
-func (_e *Payer_Expecter) UnmarshalAndReturnReason(r interface{}) *Payer_UnmarshalAndReturnReason_Call {
-	return &Payer_UnmarshalAndReturnReason_Call{Call: _e.mock.On("UnmarshalAndReturnReason", r)}
+func (_e *Payer_Expecter) UpdateAndReturnReason(r interface{}) *Payer_UpdateAndReturnReason_Call {
+	return &Payer_UpdateAndReturnReason_Call{Call: _e.mock.On("UpdateAndReturnReason", r)}
 }
 
-func (_c *Payer_UnmarshalAndReturnReason_Call) Run(run func(r *payment.Reason)) *Payer_UnmarshalAndReturnReason_Call {
+func (_c *Payer_UpdateAndReturnReason_Call) Run(run func(r *payment.Reason)) *Payer_UpdateAndReturnReason_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run(args[0].(*payment.Reason))
 	})
 	return _c
 }
 
-func (_c *Payer_UnmarshalAndReturnReason_Call) Return(_a0 *payment.Reason) *Payer_UnmarshalAndReturnReason_Call {
+func (_c *Payer_UpdateAndReturnReason_Call) Return(_a0 *payment.Reason) *Payer_UpdateAndReturnReason_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *Payer_UnmarshalAndReturnReason_Call) RunAndReturn(run func(*payment.Reason) *payment.Reason) *Payer_UnmarshalAndReturnReason_Call {
+func (_c *Payer_UpdateAndReturnReason_Call) RunAndReturn(run func(*payment.Reason) *payment.Reason) *Payer_UpdateAndReturnReason_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// UnmarshalReason provides a mock function with given fields: r
-func (_m *Payer) UnmarshalReason(r *payment.Reason) error {
+// UpdateReason provides a mock function with given fields: r
+func (_m *Payer) UpdateReason(r *payment.Reason) error {
 	ret := _m.Called(r)
 
 	var r0 error
@@ -172,30 +172,30 @@ func (_m *Payer) UnmarshalReason(r *payment.Reason) error {
 	return r0
 }
 
-// Payer_UnmarshalReason_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UnmarshalReason'
-type Payer_UnmarshalReason_Call struct {
+// Payer_UpdateReason_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateReason'
+type Payer_UpdateReason_Call struct {
 	*mock.Call
 }
 
-// UnmarshalReason is a helper method to define mock.On call
+// UpdateReason is a helper method to define mock.On call
 //  - r *payment.Reason
-func (_e *Payer_Expecter) UnmarshalReason(r interface{}) *Payer_UnmarshalReason_Call {
-	return &Payer_UnmarshalReason_Call{Call: _e.mock.On("UnmarshalReason", r)}
+func (_e *Payer_Expecter) UpdateReason(r interface{}) *Payer_UpdateReason_Call {
+	return &Payer_UpdateReason_Call{Call: _e.mock.On("UpdateReason", r)}
 }
 
-func (_c *Payer_UnmarshalReason_Call) Run(run func(r *payment.Reason)) *Payer_UnmarshalReason_Call {
+func (_c *Payer_UpdateReason_Call) Run(run func(r *payment.Reason)) *Payer_UpdateReason_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run(args[0].(*payment.Reason))
 	})
 	return _c
 }
 
-func (_c *Payer_UnmarshalReason_Call) Return(_a0 error) *Payer_UnmarshalReason_Call {
+func (_c *Payer_UpdateReason_Call) Return(_a0 error) *Payer_UpdateReason_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *Payer_UnmarshalReason_Call) RunAndReturn(run func(*payment.Reason) error) *Payer_UnmarshalReason_Call {
+func (_c *Payer_UpdateReason_Call) RunAndReturn(run func(*payment.Reason) error) *Payer_UpdateReason_Call {
 	_c.Call.Return(run)
 	return _c
 }

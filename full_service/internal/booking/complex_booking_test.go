@@ -103,7 +103,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 				PaymentService: func() payment.Payer {
 					ps := mocks.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil).Once()
-					ps.EXPECT().UnmarshalReason(&payment.Reason{}).Return(nil).Run(func(r *payment.Reason) {
+					ps.EXPECT().UpdateReason(&payment.Reason{}).Return(nil).Run(func(r *payment.Reason) {
 						r.Msg = "it's not you, it's us"
 					})
 					return ps
@@ -120,8 +120,8 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 				PaymentService: func() payment.Payer {
 					ps := mocks.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil).Once()
-					ps.EXPECT().UnmarshalReason(&payment.Reason{}).Return(errors.New("error"))
-					ps.EXPECT().UnmarshalAndReturnReason(&payment.Reason{}).RunAndReturn(func(r *payment.Reason) *payment.Reason {
+					ps.EXPECT().UpdateReason(&payment.Reason{}).Return(errors.New("error"))
+					ps.EXPECT().UpdateAndReturnReason(&payment.Reason{}).RunAndReturn(func(r *payment.Reason) *payment.Reason {
 						r.Msg = "get the message!"
 						return r
 					})

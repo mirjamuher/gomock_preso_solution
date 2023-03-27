@@ -10,8 +10,8 @@ import (
 type Payer interface {
 	ProcessPayment(p *Payment) (State, error)
 	RefundPayment(p *Payment) error
-	UnmarshalReason(r *Reason) error
-	UnmarshalAndReturnReason(r *Reason) *Reason
+	UpdateReason(r *Reason) error
+	UpdateAndReturnReason(r *Reason) *Reason
 }
 
 type PaymentService struct {
@@ -28,13 +28,13 @@ func (ps *PaymentService) RefundPayment(p *Payment) error {
 	return nil
 }
 
-func (ps *PaymentService) UnmarshalReason(r *Reason) error {
+func (ps *PaymentService) UpdateReason(r *Reason) error {
 	// update passed in pointer
 	r.Msg = "it's not you, it's me"
 	return nil
 }
 
-func (ps *PaymentService) UnmarshalAndReturnReason(r *Reason) *Reason {
+func (ps *PaymentService) UpdateAndReturnReason(r *Reason) *Reason {
 	// update passed in pointer
 	r.Msg = "it's not you, it's me"
 	return r
