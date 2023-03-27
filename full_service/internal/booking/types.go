@@ -1,4 +1,4 @@
-package order
+package booking
 
 import (
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
