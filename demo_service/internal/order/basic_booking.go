@@ -14,10 +14,10 @@ func (ps *BookingService) CreateBooking(booking *Booking) error {
 
 	// Process payment for the booking
 	payment := &p.Payment{
-		TotalPrice: booking.Product.Price * float64(booking.Quantity),
-		Method:     booking.PaymentMethod,
+		TotalPrice: booking.product.price * float64(booking.quantity),
+		Method:     booking.paymentMethod,
 	}
-	state, err := ps.PaymentService.ProcessPayment(payment)
+	state, err := ps.paymentService.ProcessPayment(payment)
 	if err != nil {
 		return err
 	}

@@ -5,14 +5,14 @@ import (
 )
 
 type BookingService struct {
-	PaymentService payment.PaymentService
+	paymentService payment.PaymentService
 }
 
 type Booking struct {
-	Product Product
-	Quantity int
-	PaymentMethod string
-	PaymentState payment.State
+	product       Product
+	quantity      int
+	paymentMethod string
+	paymentState  payment.State
 }
 
 func (o *Booking) Validate() error {
@@ -20,5 +20,5 @@ func (o *Booking) Validate() error {
 }
 
 type Product struct{
-	Price float64
+	price float64
 }
