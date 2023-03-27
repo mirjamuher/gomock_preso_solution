@@ -6,6 +6,10 @@ import (
 	p "github.com/mirjamuher/gomock_preso_solution/demo_service/internal/payment"
 )
 
+type BookingService struct {
+	paymentService p.PaymentService
+}
+
 func (ps *BookingService) CreateBooking(booking *Booking) error {
 	// Validate the booking
 	if err := booking.Validate(); err != nil {
