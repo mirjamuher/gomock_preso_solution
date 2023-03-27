@@ -3,11 +3,11 @@ package booking
 import (
 	"errors"
 	"fmt"
-	p "github.com/mirjamuher/gomock_preso_solution/demo_service/internal/payment"
+	"github.com/mirjamuher/gomock_preso_solution/demo_service/internal/payment"
 )
 
 type BookingService struct {
-	paymentService p.PaymentService
+	paymentService payment.PaymentService
 }
 
 func (ps *BookingService) CreateBooking(booking *Booking) error {
@@ -17,15 +17,15 @@ func (ps *BookingService) CreateBooking(booking *Booking) error {
 	}
 
 	// Process payment for the booking
-	payment := &p.Payment{
+	p := &payment.Payload{
 		TotalPrice: booking.product.price * float64(booking.quantity),
 		Method:     booking.paymentMethod,
 	}
-	state, err := ps.paymentService.ProcessPayment(payment)
+	state, err := ps.paymentService.ProcessPayment(p)
 	if err != nil {
 		return err
 	}
-	if state != p.Succeeded {
+	if state != payment.Succeeded {
 		return errors.New(fmt.Sprintf("State is %v", state))
 	}
 

@@ -1,6 +1,6 @@
 package payment
 
-type Payment struct {
+type Payload struct {
 	TotalPrice float64
 	Method string
 }
