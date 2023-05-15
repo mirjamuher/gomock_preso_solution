@@ -40,7 +40,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			fields: fields{
 				PaymentService: func() payment.Payer {
 					ps := mocks.NewPayer(t)
-					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Initiated, nil).Twice()
+					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Initiated, nil).Times(2)
 					return ps
 				},
 			},

@@ -7,7 +7,7 @@ import (
 )
 
 type BookingService struct {
-	paymentService payment.PaymentService
+	paymentService payment.Payer
 }
 
 func (ps *BookingService) CreateBooking(booking *Booking) error {
