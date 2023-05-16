@@ -10,7 +10,7 @@ type BookingService struct {
 	paymentService payment.PaymentService
 }
 
-func (ps *BookingService) CreateBooking(booking *Booking) error {
+func (bs *BookingService) CreateBooking(booking *Booking) error {
 	// Validate the booking
 	if err := booking.Validate(); err != nil {
 		return err
@@ -21,7 +21,7 @@ func (ps *BookingService) CreateBooking(booking *Booking) error {
 		TotalPrice: booking.product.price * float64(booking.quantity),
 		Method:     booking.paymentMethod,
 	}
-	state, err := ps.paymentService.ProcessPayment(p)
+	state, err := bs.paymentService.ProcessPayment(p)
 	if err != nil {
 		return err
 	}
