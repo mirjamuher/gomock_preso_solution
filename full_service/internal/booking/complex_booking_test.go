@@ -11,7 +11,7 @@ import (
 
 func TestBookingService_ProcessBooking(t *testing.T) {
 	validOrder := Booking{
-		Product:       Product{
+		Product: Product{
 			Price: 100,
 		},
 		Quantity:      1,
@@ -24,7 +24,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 	}
 
 	type fields struct {
-		PaymentService func() payment.Payer
+		PaymentService func(t *testing.T) payment.Payer
 	}
 	type args struct {
 		booking *Booking
@@ -38,9 +38,9 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 		{
 			name: "success: payment initiated, so we do another one",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
-					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Initiated, nil).Times(2)
+					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Initiated, nil).Times(3)
 					return ps
 				},
 			},
@@ -53,7 +53,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			// comment: what's interesting here is that the order doesn't matter if you don't specify
 			name: "success: payment failed, so we do a call to Refund & then another payment",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, nil).Twice()
 					ps.EXPECT().RefundPayment(mock.Anything).Return(nil).Once()
@@ -69,7 +69,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			// comment: same test, this time we assert that it has to be in a certain order
 			name: "success: payment failed, so we do a call to Refund & then another payment",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					call1 := ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, nil).Once()
 					call2 := ps.EXPECT().RefundPayment(mock.Anything).Return(nil).Once().NotBefore(call1)
@@ -85,7 +85,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 		{
 			name: "error: (1) payment failed so we (2) try to refund but it (3) times out so we return an error",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					call1 := ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, nil).Once()
 					ps.EXPECT().RefundPayment(mock.Anything).Return(nil).Once().NotBefore(call1).After(time.Second * 6)
@@ -100,7 +100,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 		{
 			name: "success: payment state unknown, we let payer fill out reason why",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil).Once()
 					ps.EXPECT().UpdateReason(&payment.Reason{}).Return(nil).Run(func(r *payment.Reason) {
@@ -117,7 +117,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 		{
 			name: "success: payment state unknown, we let payer return the reason why",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil).Once()
 					ps.EXPECT().UpdateReason(&payment.Reason{}).Return(errors.New("error"))
@@ -137,7 +137,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ps := &BookingService{
-				PaymentService: tt.fields.PaymentService(),
+				PaymentService: tt.fields.PaymentService(t),
 			}
 			if err := ps.ProcessBooking(tt.args.booking); (err != nil) != tt.wantErr {
 				t.Errorf("ProcessBooking() error = %v, wantErr %v", err, tt.wantErr)

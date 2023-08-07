@@ -10,7 +10,7 @@ import (
 
 func TestProductService_CreateOrder(t *testing.T) {
 	validOrder := Booking{
-		Product:       Product{
+		Product: Product{
 			Price: 100,
 		},
 		Quantity:      1,
@@ -22,19 +22,8 @@ func TestProductService_CreateOrder(t *testing.T) {
 		Method:     "CREDIT",
 	}
 
-	// for demo purposes of input checK:
-	//differentOrder := Booking{
-	//	Product:       Product{
-	//		Price: 1,
-	//	},
-	//	Quantity:      1,
-	//	PaymentMethod: "DEBIT",
-	//	State:  0,
-	//}
-
-
 	type fields struct {
-		PaymentService func() payment.Payer
+		PaymentService func(t *testing.T) payment.Payer
 	}
 	type args struct {
 		booking *Booking
@@ -48,7 +37,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 		{
 			name: "success: payment successful",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					//ps.On("ProcessPayment", &validPayment).Return(payment.Succeeded, nil)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Succeeded, nil)
@@ -63,7 +52,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 		{
 			name: "error: process payment failed",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, errors.New("error"))
 					return ps
@@ -77,7 +66,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 		{
 			name: "error: process payment returned other state than success",
 			fields: fields{
-				PaymentService: func() payment.Payer {
+				PaymentService: func(t *testing.T) payment.Payer {
 					ps := mocks.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil)
 					return ps
@@ -92,7 +81,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ps := &BookingService{
-				PaymentService: tt.fields.PaymentService(),
+				PaymentService: tt.fields.PaymentService(t),
 			}
 			if err := ps.CreateBooking(tt.args.booking); (err != nil) != tt.wantErr {
 				if tt.wantErr {
