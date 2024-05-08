@@ -2,8 +2,8 @@ package booking
 
 import (
 	"errors"
-	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
-	"github.com/mirjamuher/gomock_preso_solution/full_service/mocks"
+	"github.com/mirjamuher/gomock_preso_solution/full_solution/internal/payment"
+	mocks_payment "github.com/mirjamuher/gomock_preso_solution/full_solution/mocks"
 	"github.com/stretchr/testify/mock"
 	"testing"
 	"time"

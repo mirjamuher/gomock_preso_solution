@@ -1,7 +1,7 @@
 package booking
 
 import (
-	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
+	"github.com/mirjamuher/gomock_preso_solution/full_solution/internal/payment"
 )
 
 type BookingService struct {
@@ -9,16 +9,16 @@ type BookingService struct {
 }
 
 type Booking struct {
-	Product Product
-	Quantity int
+	Product       Product
+	Quantity      int
 	PaymentMethod string
-	PaymentState payment.State
+	PaymentState  payment.State
 }
 
 func (o *Booking) Validate() error {
 	return nil
 }
 
-type Product struct{
+type Product struct {
 	Price float64
 }

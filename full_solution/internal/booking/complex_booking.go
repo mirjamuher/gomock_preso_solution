@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
+	p "github.com/mirjamuher/gomock_preso_solution/full_solution/internal/payment"
 	"time"
 )
 

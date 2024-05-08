@@ -3,7 +3,7 @@
 package mocks_payment
 
 import (
-	payment "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
+	payment "github.com/mirjamuher/gomock_preso_solution/full_solution/internal/payment"
 	mock "github.com/stretchr/testify/mock"
 )
 

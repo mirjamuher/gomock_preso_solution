@@ -3,7 +3,7 @@ package booking
 import (
 	"errors"
 	"fmt"
-	p "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
+	p "github.com/mirjamuher/gomock_preso_solution/full_solution/internal/payment"
 )
 
 func (ps *BookingService) CreateBooking(booking *Booking) error {

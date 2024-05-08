@@ -1,6 +1,5 @@
-with-expecter: True
+with-expecter: True  # defaults to True, but here for explicitness
 disable-version-string: True
-dir: mocks/{{ replaceAll .InterfaceDirRelative "internal" "internal" }}
 mockname: "{{.InterfaceName}}"
 outpkg: "mocks_{{.PackageName}}"
 filename: "{{.InterfaceName}}.go"
