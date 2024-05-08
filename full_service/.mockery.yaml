@@ -1,0 +1,16 @@
+with-expecter: True
+disable-version-string: True
+all: True
+recursive: True
+dir: mocks/{{ replaceAll .InterfaceDirRelative "internal" "internal" }}
+mockname: "{{.InterfaceName}}"
+outpkg: "mocks_{{.PackageName}}"
+filename: "{{.InterfaceName}}.go"
+
+packages:
+  github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment:
+    config: # place your package-specific config here
+      dir: mocks/{{trimPrefix .PackagePath "github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"}}
+    interfaces: # select the interfaces  you want mocked
+      Payer:
+        config: # you can add package-level config for this specific interface

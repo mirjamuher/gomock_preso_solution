@@ -3,7 +3,7 @@ package booking
 import (
 	"errors"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
-	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment/mocks"
+	"github.com/mirjamuher/gomock_preso_solution/full_service/mocks"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -38,7 +38,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "success: payment successful",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					//ps.On("ProcessPayment", &validPayment).Return(payment.Succeeded, nil)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Succeeded, nil)
 					return ps
@@ -53,7 +53,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "error: process payment failed",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, errors.New("error"))
 					return ps
 				},
@@ -67,7 +67,7 @@ func TestProductService_CreateOrder(t *testing.T) {
 			name: "error: process payment returned other state than success",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil)
 					return ps
 				},

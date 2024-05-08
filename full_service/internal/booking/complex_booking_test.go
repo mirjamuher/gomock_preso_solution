@@ -3,7 +3,7 @@ package booking
 import (
 	"errors"
 	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment"
-	"github.com/mirjamuher/gomock_preso_solution/full_service/internal/payment/mocks"
+	"github.com/mirjamuher/gomock_preso_solution/full_service/mocks"
 	"github.com/stretchr/testify/mock"
 	"testing"
 	"time"
@@ -39,8 +39,8 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			name: "success: payment initiated, so we do another one",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
-					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Initiated, nil).Times(3)
+					ps := mocks_payment.NewPayer(t)
+					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Initiated, nil).Times(2)
 					return ps
 				},
 			},
@@ -54,7 +54,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			name: "success: payment failed, so we do a call to Refund & then another payment",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, nil).Twice()
 					ps.EXPECT().RefundPayment(mock.Anything).Return(nil).Once()
 					return ps
@@ -70,7 +70,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			name: "success: payment failed, so we do a call to Refund & then another payment",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					call1 := ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, nil).Once()
 					call2 := ps.EXPECT().RefundPayment(mock.Anything).Return(nil).Once().NotBefore(call1)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, nil).Once().NotBefore(call2)
@@ -86,7 +86,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			name: "error: (1) payment failed so we (2) try to refund but it (3) times out so we return an error",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					call1 := ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Failed, nil).Once()
 					ps.EXPECT().RefundPayment(mock.Anything).Return(nil).Once().NotBefore(call1).After(time.Second * 6)
 					return ps
@@ -101,7 +101,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			name: "success: payment state unknown, we let payer fill out reason why",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil).Once()
 					ps.EXPECT().UpdateReason(&payment.Reason{}).Return(nil).Run(func(r *payment.Reason) {
 						r.Msg = "it's not you, it's us"
@@ -118,7 +118,7 @@ func TestBookingService_ProcessBooking(t *testing.T) {
 			name: "success: payment state unknown, we let payer return the reason why",
 			fields: fields{
 				PaymentService: func(t *testing.T) payment.Payer {
-					ps := mocks.NewPayer(t)
+					ps := mocks_payment.NewPayer(t)
 					ps.EXPECT().ProcessPayment(&validPayment).Return(payment.Unknown, nil).Once()
 					ps.EXPECT().UpdateReason(&payment.Reason{}).Return(errors.New("error"))
 					ps.EXPECT().UpdateAndReturnReason(&payment.Reason{}).RunAndReturn(func(r *payment.Reason) *payment.Reason {
